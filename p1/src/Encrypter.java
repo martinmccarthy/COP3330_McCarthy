@@ -15,10 +15,10 @@ public class Encrypter {
     }
 
     //convertNum converts every number in the int into a single digit and stores in an array for future manipulation.
-    static int[] numToArray(int num){
+    public static int[] numToArray(int num) {
         int[] numArray = new int[4];
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 4; i++) {
             numArray[4 - i - 1] = num % 10;
 
             num = num / 10;
@@ -29,16 +29,16 @@ public class Encrypter {
     }
 
     //convertString converts the array back into a String to send the result back to the user
-    static String convertString(int[] digits){
+    public static String convertString(int[] digits) {
         String result = "";
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 4; i++) {
             result = result.concat(Integer.toString(digits[i]));
        }
         return result;
     }
 
     //digitSwap takes the digits after arithmetic and swaps them
-    static void digitSwap(int[] digits){
+    public static void digitSwap(int[] digits) {
         int temp;
 
         //Swap digit 1 and digit 3
@@ -53,7 +53,7 @@ public class Encrypter {
     }
 
     public static void main(String[] args) {
-        String check = encrypt("1234");
+        String check = encrypt("2458");
         System.out.println(check);
     }
 }
