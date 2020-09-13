@@ -1,5 +1,5 @@
 public class Encrypter {
-    static String encrypt(String num) {
+    String encrypt(String num) {
         int unencryptedNum = Integer.parseInt(num); //Convert the inserted string into a number in order to manipulate the numbers
 
         int[] digits = numToArray(unencryptedNum); //Calls the convertNum function and stores each number in an array
@@ -15,7 +15,7 @@ public class Encrypter {
     }
 
     //convertNum converts every number in the int into a single digit and stores in an array for future manipulation.
-    public static int[] numToArray(int num) {
+    static int[] numToArray(int num) {
         int[] numArray = new int[4];
 
         for(int i = 0; i < 4; i++) {
@@ -29,7 +29,7 @@ public class Encrypter {
     }
 
     //convertString converts the array back into a String to send the result back to the user
-    public static String convertString(int[] digits) {
+    static String convertString(int[] digits) {
         String result = "";
         for(int i = 0; i < 4; i++) {
             result = result.concat(Integer.toString(digits[i]));
@@ -38,7 +38,7 @@ public class Encrypter {
     }
 
     //digitSwap takes the digits after arithmetic and swaps them
-    public static void digitSwap(int[] digits) {
+    static void digitSwap(int[] digits) {
         int temp;
 
         //Swap digit 1 and digit 3
@@ -50,10 +50,5 @@ public class Encrypter {
         temp = digits[1];
         digits[1] = digits[3];
         digits[3] = temp;
-    }
-
-    public static void main(String[] args) {
-        String check = encrypt("2458");
-        System.out.println(check);
     }
 }
