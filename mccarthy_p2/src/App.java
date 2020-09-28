@@ -65,8 +65,13 @@ public class App {
         System.out.println("User's BMI: " + bmiScore + ", User is: " + bmiCategory);
     }
 
-    static void displayBmiStatistics(ArrayList bmiData) {
-
+    static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiData) {
+        double average = 0.0;
+        for (int counter = 0 ; counter < bmiData.size(); counter ++){
+            average += bmiData.get(counter).calculateBmi();
+        }
+        average /= bmiData.size(); // check to make sure that size gives the right value
+        System.out.printf("Average: %.2f", average);
     }
 
     public static void main(String[] args) {
