@@ -1,36 +1,44 @@
+import java.util.Formatter;
 import java.util.Scanner;
+import java.io.*;
 
 public class TaskList {
-    private Menu menu = new Menu();
+    private Formatter taskList;
+    private Scanner readList;
 
-    public int getMenuInput() {
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print("> ");
-        int userInput = scan.nextInt();
-        scan.nextLine();
-
-        int acceptableAnswer = menu.handleUserInput(userInput, 8);
-
-        while(acceptableAnswer < 0) {
-            System.out.println("Invalid input, enter a proper answer: ");
-            userInput = scan.nextInt();
-            scan.nextLine();
-            acceptableAnswer = menu.handleUserInput(userInput, 8);
+    public void viewList() {
+        try{
+            readList = new Scanner(new File("task-list.txt"));
+        }
+        catch(Exception e) {
+            System.out.println("could not find file");
         }
 
-        return userInput;
+        while(readList.hasNext()) {
+            String s = readList.nextLine();
+            System.out.println(s);
+        }
+
+        taskList.close();
     }
 
-    public void createOperationMenu() {
-        System.out.println("List Operation Menu\n---------");
-        System.out.println("1) view the list");
-        System.out.println("2) add an item");
-        System.out.println("3) edit an item");
-        System.out.println("4) remove an item");
-        System.out.println("5) mark an item as complete");
-        System.out.println("6) unmark an item as complete");
-        System.out.println("7) save the current list");
-        System.out.println("8) quit to the main menu");
+    public void addAnItem() {
+
+    }
+
+    public void createTaskList() {
+        try {
+            taskList = new Formatter("task-list.txt");
+            taskList.format("%s", "Current Tasks\n" + "-------------");
+        }
+        catch(Exception e) {
+            System.out.println("error");
+        }
+
+        taskList.close();
+    }
+
+    public void closeTaskList() {
+        taskList.close();
     }
 }
