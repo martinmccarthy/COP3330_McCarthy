@@ -190,12 +190,21 @@ public class App {
             taskList.deleteTask(taskToDelete);
         }
         else {
-            System.out.println("there are no files to delete!");
+            System.out.println("there are no tasks to delete!");
         }
     }
 
     public static void markAnItemComplete() {
+        if(totalTasks > 0) {
+            printTaskList();
+            System.out.println("Which task will you mark as complete");
+            int taskToMark = taskChoice(totalTasks);
 
+            taskList.markTaskAsComplete(taskToMark);
+        }
+        else {
+            System.out.println("there are no tasks to mark");
+        }
     }
 
     public static void main(String[] args) {

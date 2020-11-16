@@ -41,6 +41,35 @@ public class TaskList {
         }
     }
 
+    public void markTaskAsComplete(int taskToMark) {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        try {
+            File fileToEdit = new File(fileName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while(reader.hasNext()) {
+                line = reader.nextLine();
+                if(line.contains(taskToMark + ")")) {
+                    line = line.replace(line, "***" + line);
+                }
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(fileName);
+
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
+            }
+
+            reader.close();
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("could not read file");
+            e.printStackTrace();
+        }
+    }
+
     public void readTaskList() {
         try{
             File fileToRead = new File(fileName);
