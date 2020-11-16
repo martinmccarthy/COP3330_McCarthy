@@ -1,44 +1,148 @@
-import java.util.Formatter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.*;
 
 public class TaskList {
-    private Formatter taskList;
-    private Scanner readList;
+    private String fileName;
 
-    public void viewList() {
-        try{
-            readList = new Scanner(new File("task-list.txt"));
-        }
-        catch(Exception e) {
-            System.out.println("could not find file");
-        }
-
-        while(readList.hasNext()) {
-            String s = readList.nextLine();
-            System.out.println(s);
-        }
-
-        taskList.close();
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public void addAnItem() {
+    public void deleteTask(int taskToDelete) {
+        ArrayList<String> lines = new ArrayList<String>();
 
+        try {
+            File fileToEdit = new File(fileName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while(reader.hasNext()) {
+                line = reader.nextLine();
+                if(line.contains(taskToDelete + ")")) {
+                    line = line.replace(line, "");
+                }
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(fileName);
+
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
+            }
+
+            reader.close();
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("could not read file");
+            e.printStackTrace();
+        }
+    }
+
+    public void readTaskList() {
+        try{
+            File fileToRead = new File(fileName);
+            Scanner reader = new Scanner(fileToRead);
+
+            while(reader.hasNext()) {
+                String printLine = reader.nextLine();
+                System.out.println(printLine);
+            }
+
+            reader.close();
+        }
+        catch (Exception e) {
+            System.out.println("");
+        }
+    }
+
+    public int getTotalTasks () {
+        ArrayList<Integer> possibleTasks = new ArrayList<>();
+        try{
+            File fileToRead = new File(fileName);
+            Scanner reader = new Scanner(fileToRead);
+
+            String infoToPull;
+            while(reader.hasNext()) {
+                infoToPull = reader.next();
+                int nextTask = Integer.parseInt(infoToPull);
+                possibleTasks.add(nextTask);
+                reader.nextLine();
+            }
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("could not read file");
+        }
+
+        return possibleTasks.toArray().length;
+    }
+
+    public void editATask(int taskToEdit, String newTitle, String newDesc, String newDate) {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        try {
+            File fileToEdit = new File(fileName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while(reader.hasNext()) {
+                line = reader.nextLine();
+                if(line.contains(taskToEdit + ")")) {
+                    line = line.replace(line, taskToEdit + ") [" + newDate + "] " + newTitle + ": " + newDesc);
+                }
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(fileName);
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
+            }
+
+            reader.close();
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("could not read file");
+            e.printStackTrace();
+        }
+    }
+
+    public void renameFile(String newFileName) {
+        try{
+            File oldFile = new File(fileName);
+            File renamedFile = new File(newFileName);
+            oldFile.renameTo(renamedFile);
+            fileName = newFileName;
+        }
+        catch(Exception e) {
+            System.out.println("file name already exists");
+        }
+    }
+
+    public void writeToFile(String taskToAdd) {
+        try{
+            FileWriter writer = new FileWriter(fileName, true);
+            writer.write(taskToAdd + "\n");
+            writer.close();
+        }
+        catch(IOException e) {
+            System.out.println("error in adding task");
+            e.printStackTrace();
+        }
     }
 
     public void createTaskList() {
         try {
-            taskList = new Formatter("task-list.txt");
-            taskList.format("%s", "Current Tasks\n" + "-------------");
-        }
-        catch(Exception e) {
-            System.out.println("error");
-        }
+            File newFile = new File(fileName);
 
-        taskList.close();
-    }
-
-    public void closeTaskList() {
-        taskList.close();
+            FileWriter writer = new FileWriter(newFile, false);
+            System.out.println("new task list has been created\n");
+            writer.write("Current Tasks\n" +
+                    "-------------\n");
+            writer.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }

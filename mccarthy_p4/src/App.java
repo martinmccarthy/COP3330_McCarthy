@@ -1,92 +1,217 @@
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class App {
-    private static Scanner scanner = new Scanner(System.in);
-    private static TaskList taskList = new TaskList();
+    static TaskItem taskItem = new TaskItem();
+    public static TaskList taskList = new TaskList();
 
-    public static int handleUserInput(int userInput, int totalOptions)
-    {
-        ArrayList<Integer> possibleInputs = new ArrayList<>();
-        for(int i = 1; i <= totalOptions; i++) {
-            possibleInputs.add(i);
-        }
-        for (int i = 0; i < possibleInputs.toArray().length; i++) {
-            if (userInput == possibleInputs.get(i)) {
-                return 1;
+    private static Scanner input = new Scanner(System.in);
+    private static int returnValue;
+    private static int totalTasks = 0;
+
+    public static void userMenuChoice(int totalOptions) {
+        try {
+            System.out.print("\n> ");
+            String inputString = input.nextLine();
+            int userChoice = Integer.parseInt(inputString);
+            if (userChoice < 1 || userChoice > totalOptions) {
+                System.out.println("Error. Input out of bounds");
+                userMenuChoice(totalOptions);
+            }
+            else {
+                returnValue = userChoice;
             }
         }
-
-        return -1;
-    }
-
-    public static int getMenuInput(int totalOptions) {
-        System.out.print("> ");
-        int userInput = scanner.nextInt();
-        scanner.nextLine();
-
-        int acceptableAnswer = handleUserInput(userInput, totalOptions);
-
-        while(acceptableAnswer < 0) {
-            System.out.println("Invalid input, enter a proper answer: ");
-            userInput = scanner.nextInt();
-            scanner.nextLine();
-            acceptableAnswer = handleUserInput(userInput, totalOptions);
+        catch (NumberFormatException ex) {
+            System.out.println("Invalid input. You have to enter an integer");
+            userMenuChoice(totalOptions);
         }
-
-        return userInput;
     }
 
-    public static void printOperationMenu() {
-        System.out.println("List Operation Menu\n---------");
 
-        System.out.println("1) view the list");
-        System.out.println("2) add an item");
-        System.out.println("3) edit an item");
-        System.out.println("4) remove an item");
-        System.out.println("5) mark an item as complete");
-        System.out.println("6) unmark an item as complete");
-        System.out.println("7) save the current list");
-        System.out.println("8) quit to the main menu\n");
-    }
-
-    public static void printMainMenu() {
-        System.out.println("Main Menu\n---------");
-
-        System.out.println("1) create a new list");
-        System.out.println("2) load an existing list");
-        System.out.println("3) quit\n");
-    }
-
-    public static void branchFromMenu(int userInput) {
-        if(userInput == 1) {
-            taskList.createTaskList();
-        }
-        int operationInput = 0;
-        while(operationInput != 8) {
-            printOperationMenu();
-            operationInput = getMenuInput(8);
-            if(operationInput == 1) {
-                taskList.viewList();
+    public static void branchToOperationMenu() {
+        while(returnValue != 8) {
+            printListOperationMenu();
+            userMenuChoice(8);
+            if(returnValue == 1) {
+                printTaskList();
             }
-            if(operationInput == 2) {
+            else if(returnValue == 2) {
+                insertNewItem();
+            }
+            else if(returnValue == 3) {
+                editAnItem();
+            }
+            else if(returnValue == 4) {
+                deleteAnItem();
+            }
+            else if(returnValue == 5) {
+                markAnItemComplete();
+            }
+            else if(returnValue == 6) {
 
             }
+            else if(returnValue == 7) {
+                taskList.renameFile(getNewListName());
+            }
         }
-        taskList.closeTaskList();
+    }
+
+    public static void printMenu() {
+        System.out.println("Main Menu\n" +
+                "---------\n" +
+                "\n" +
+                "1) create a new list\n" +
+                "2) load an existing list\n" +
+                "3) quit");
+    }
+
+    public static void printListOperationMenu() {
+        System.out.println("List Operation Menu\n" +
+                "---------\n" +
+                "\n" +
+                "1) view the list\n" +
+                "2) add an item\n" +
+                "3) edit an item\n" +
+                "4) remove an item\n" +
+                "5) mark an item as completed\n" +
+                "6) unmark an item as completed\n" +
+                "7) save the current list\n" +
+                "8) quit to the main menu");
+    }
+
+    public static void printTaskList() {
+        taskList.readTaskList();
+    }
+
+    public static String getNewListName() {
+        String listName = input.nextLine();
+        if(listName.length() == 0) {
+            getNewListName();
+        }
+        return listName;
+    }
+
+    public static String getDueDateInput() {
+        String dueDate = "";
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("YYYY-DD-MM");
+            dueDate = input.nextLine();
+            Date returnDate = formatter.parse(dueDate);
+            dueDate = returnDate.toString();
+        }
+        catch (Exception e) {
+            System.out.print("Invalid date input, re-enter with format YYYY-MM-DD: ");
+            getDueDateInput();
+        }
+
+        return dueDate;
+    }
+
+    public static String getDescriptionInput() {
+        return input.nextLine();
+    }
+
+    public static String getTitleInput() {
+        String title = input.nextLine();
+        if(taskItem.titleCheck(title) != 0) {
+            getTitleInput();
+        }
+
+        return title;
+    }
+
+    public static int taskChoice(int possibleChoices) {
+        try {
+            String inputString = input.nextLine();
+            int userChoice = Integer.parseInt(inputString);
+            if (userChoice < 0 || userChoice > possibleChoices) {
+                System.out.println("Error. Input out of bounds");
+                taskChoice(possibleChoices);
+            }
+            else {
+                return userChoice;
+            }
+        }
+        catch (NumberFormatException ex) {
+            System.out.println("Invalid input. You have to enter an integer");
+            taskChoice(possibleChoices);
+        }
+        return 0;
+    }
+
+    public static void editAnItem() {
+        if(totalTasks > 0) {
+            printTaskList();
+
+            System.out.print("Which task will you edit?");
+            int taskToEdit = taskChoice(totalTasks);
+
+            System.out.println("Enter a new title for task " + taskToEdit);
+            String newTitle = getTitleInput();
+            System.out.println("Enter a new description for task " + taskToEdit);
+            String newDesc = getDescriptionInput();
+            System.out.println("Enter a new due date (YYYY-MM-DD) for task " + taskToEdit);
+            String newDate = getDueDateInput();
+
+            taskList.editATask(taskToEdit, newTitle, newDesc, newDate);
+        }
+        else
+            System.out.println("There are no tasks to edit");
+    }
+
+    public static void insertNewItem() {
+
+        System.out.print("Task title: ");
+        String title = getTitleInput();
+        System.out.print("Task description: ");
+        String description = getDescriptionInput();
+        System.out.print("Task due date (YYYY-MM-DD): ");
+        String dueDate = getDueDateInput();
+
+        taskItem.setTitle(title);
+        taskItem.setDescription(description);
+        taskItem.setDueDate(dueDate);
+        taskItem.setTaskNumber(totalTasks);
+
+        String fullTask = taskItem.concatTaskItem();
+        taskItem.addToTaskList(fullTask);
+        totalTasks++;
+    }
+
+    public static void deleteAnItem() {
+        if(totalTasks > 0) {
+            printTaskList();
+            System.out.println("Which task will you remove?");
+            int taskToDelete = taskChoice(totalTasks);
+
+            taskList.deleteTask(taskToDelete);
+        }
+        else {
+            System.out.println("there are no files to delete!");
+        }
+    }
+
+    public static void markAnItemComplete() {
+
     }
 
     public static void main(String[] args) {
-
-        int quitChoice = 0;
-        while(quitChoice != 1) {
-            printMainMenu();
-            int mainMenuInput = getMenuInput(3);
-            if(mainMenuInput == 1 || mainMenuInput == 2) {
-                branchFromMenu(mainMenuInput);
+        while(returnValue != 3) {
+            printMenu();
+            userMenuChoice(3);
+            if(returnValue == 1) {
+                taskList.setFileName("task-list.txt");
+                taskList.createTaskList();
+                branchToOperationMenu();
             }
-            else if(mainMenuInput == 3) {
-                quitChoice = 1;
+            else if(returnValue == 2) {
+                System.out.println("Enter the file name to load: ");
+                String fileToLoad = input.nextLine();
+                taskList.setFileName(fileToLoad);
+                branchToOperationMenu();
             }
         }
     }
