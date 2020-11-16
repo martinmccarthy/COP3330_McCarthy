@@ -1,3 +1,4 @@
+import javax.swing.text.DateFormatter;
 import java.time.format.*;
 import java.time.LocalDate;
 
@@ -29,9 +30,18 @@ public class TaskItem {
         return 0;
     }
 
-    /*public int dateCheck(String dueDate) {
+    public int dateCheck(String dueDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+        LocalDate userDate = LocalDate.parse(dueDate);
 
-    }*/
+        if(userDate.compareTo(today) < 0) {
+            System.out.print("date entered is invalid, please re-enter: ");
+            return 1;
+        }
+
+        return 0;
+    }
 
     public String getTitle() {
         return title;

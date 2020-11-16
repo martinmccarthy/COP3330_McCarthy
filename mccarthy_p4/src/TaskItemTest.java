@@ -34,4 +34,35 @@ public class TaskItemTest {
 
     //DueDate Tests
 
+    @Test
+    void creatingTaskItemFailsWithInvalidDueDate() {
+        TaskItem item = new TaskItem();
+
+        assertEquals(1, item.dateCheck("2012-10-07"));
+    }
+
+    @Test
+    void creatingTaskItemSucceedsWithValidDueDate() {
+        TaskItem item = new TaskItem();
+
+        assertEquals(0, item.dateCheck("2021-10-07"));
+    }
+
+    @Test
+    void settingTaskItemFailsWithInvalidDueDate() {
+        TaskItem item = new TaskItem();
+
+        item.setDueDate("2020-10-09");
+
+        assertEquals(1, item.dateCheck(item.getDueDate()));
+    }
+
+    @Test
+    void settingTaskItemSucceedsWithValidDueDate() {
+        TaskItem item = new TaskItem();
+
+        item.setDueDate("2021-10-07");
+
+        assertEquals(0, item.dateCheck(item.getDueDate()));
+    }
 }

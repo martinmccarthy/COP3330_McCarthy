@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -6,8 +7,10 @@ import java.time.LocalDate;
 public class App {
     static TaskItem taskItem = new TaskItem();
     public static TaskList taskList = new TaskList();
-
     private static Scanner input = new Scanner(System.in);
+
+    static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("M/d/yyyy");
+
     private static int returnValue;
     private static int totalTasks = 0;
 
@@ -97,10 +100,13 @@ public class App {
     public static String getDueDateInput() {
         String dueDate = "";
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("YYYY-DD-MM");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             dueDate = input.nextLine();
-            Date returnDate = formatter.parse(dueDate);
+            LocalDate returnDate = LocalDate.parse(dueDate, formatter);
             dueDate = returnDate.toString();
+            if(taskItem.dateCheck(dueDate) != 0) {
+                getDueDateInput();
+            }
         }
         catch (Exception e) {
             System.out.print("Invalid date input, re-enter with format YYYY-MM-DD: ");
