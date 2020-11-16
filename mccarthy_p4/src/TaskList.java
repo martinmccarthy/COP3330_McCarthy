@@ -41,6 +41,35 @@ public class TaskList {
         }
     }
 
+    public void unmarkTaskAsComplete(int taskToUnmark) {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        try {
+            File fileToEdit = new File(fileName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while(reader.hasNext()) {
+                line = reader.nextLine();
+                if(line.contains(taskToUnmark + ")")) {
+                    line = line.replace("***",  "");
+                }
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(fileName);
+
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
+            }
+
+            reader.close();
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("could not read file");
+            e.printStackTrace();
+        }
+    }
+
     public void markTaskAsComplete(int taskToMark) {
         ArrayList<String> lines = new ArrayList<String>();
 
@@ -93,6 +122,9 @@ public class TaskList {
             File fileToRead = new File(fileName);
             Scanner reader = new Scanner(fileToRead);
 
+            reader.nextLine();
+            reader.nextLine();
+
             String infoToPull;
             while(reader.hasNext()) {
                 infoToPull = reader.next();
@@ -100,6 +132,8 @@ public class TaskList {
                 possibleTasks.add(nextTask);
                 reader.nextLine();
             }
+
+            reader.close();
         }
         catch(FileNotFoundException e) {
             System.out.println("could not read file");

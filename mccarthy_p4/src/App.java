@@ -194,6 +194,19 @@ public class App {
         }
     }
 
+    public static void unmarkAnItemComplete() {
+        if(totalTasks > 0) {
+            printTaskList();
+            System.out.println("Which task will you unmark as complete");
+            int taskToUnmark = taskChoice(totalTasks);
+
+            taskList.unmarkTaskAsComplete(taskToUnmark);
+        }
+        else {
+            System.out.println("there are no tasks to unmark");
+        }
+    }
+
     public static void markAnItemComplete() {
         if(totalTasks > 0) {
             printTaskList();
@@ -220,6 +233,7 @@ public class App {
                 System.out.println("Enter the file name to load: ");
                 String fileToLoad = input.nextLine();
                 taskList.setFileName(fileToLoad);
+                totalTasks = taskList.getTotalTasks();
                 branchToOperationMenu();
             }
         }
