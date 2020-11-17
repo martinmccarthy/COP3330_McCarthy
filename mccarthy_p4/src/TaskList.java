@@ -170,6 +170,15 @@ public class TaskList {
         }
     }
 
+    public int renameFileCheck(String newFileName) {
+        if(newFileName.length() == 0)
+        {
+            return 1;
+        }
+
+        return 0;
+    }
+
     public void renameFile(String newFileName) {
         try{
             File oldFile = new File(fileName);

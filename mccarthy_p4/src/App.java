@@ -54,7 +54,7 @@ public class App {
                 markAnItemComplete();
             }
             else if(returnValue == 6) {
-
+                unmarkAnItemComplete();
             }
             else if(returnValue == 7) {
                 taskList.renameFile(getNewListName());
@@ -105,6 +105,7 @@ public class App {
             LocalDate returnDate = LocalDate.parse(dueDate, formatter);
             dueDate = returnDate.toString();
             if(taskItem.dateCheck(dueDate) != 0) {
+                input.nextLine();
                 getDueDateInput();
             }
         }
@@ -123,6 +124,7 @@ public class App {
     public static String getTitleInput() {
         String title = input.nextLine();
         if(taskItem.titleCheck(title) != 0) {
+            input.nextLine();
             getTitleInput();
         }
 

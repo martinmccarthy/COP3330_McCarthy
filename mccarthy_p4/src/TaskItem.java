@@ -24,7 +24,7 @@ public class TaskItem {
     // if the title is invalid, return 1 for exception handling, otherwise return 0
     public int titleCheck(String title) {
         if(title.length() == 0) {
-            System.out.println("Task title requires one or more characters");
+            System.out.print("Task title requires one or more characters, please re-enter: ");
             return 1;
         }
         return 0;
