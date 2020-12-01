@@ -108,4 +108,47 @@ public class ContactList {
             e.printStackTrace();
         }
     }
+
+    public void deleteTask(int taskToDelete) {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        try {
+            File fileToEdit = new File(listName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while(reader.hasNext()) {
+                line = reader.nextLine();
+                if(line.contains(taskToDelete + ")")) {
+                    line = line.replace(line, "");
+                }
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(listName);
+
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
+            }
+
+            reader.close();
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("could not read file");
+            e.printStackTrace();
+        }
+
+        totalContacts--;
+    }
+
+    public void renameFile(String newFileName) {
+        try{
+            File oldFile = new File(listName);
+            File renamedFile = new File(newFileName);
+            oldFile.renameTo(renamedFile);
+            listName = newFileName;
+        }
+        catch(Exception e) {
+            System.out.println("file name already exists");
+        }
+    }
 }

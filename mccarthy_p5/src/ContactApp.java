@@ -71,10 +71,18 @@ public class ContactApp extends App {
                 list.editContactList(taskToEdit, newContactString);
                 break;
             case 4:
-                System.out.println("remove an item");
+                if(list.totalContacts > 0) {
+                    list.viewContactList();
+                    System.out.print("Which task will you remove?");
+                    int taskForRemoval = getUserOption(list.totalContacts);
+                    list.deleteTask(taskForRemoval);
+                }
                 break;
             case 5:
-                System.out.println("save the current list");
+                System.out.print("Enter the filename to save as: ");
+                String newFileName = getStringInput();
+                list.renameFile(newFileName);
+                System.out.println("task list has been saved");
                 break;
             default:
                 System.out.println("an unknown error occurred");
