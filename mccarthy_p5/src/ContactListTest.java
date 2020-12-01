@@ -3,6 +3,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ContactListTest {
     @Test
+    public void newContactListIsEmpty() {
+        ContactList contactList = new ContactList();
+        contactList.setListName("test.txt");
+        contactList.createContactList();
+        assertEquals(0, contactList.totalContacts);
+    }
+
+    @Test
     public void creatingItemIncreasesTotalCount() {
         ContactList contactList = new ContactList();
         contactList.setListName("test.txt");
@@ -22,5 +30,4 @@ public class ContactListTest {
         contactList.deleteTask(1);
         assertEquals(0, contactList.totalContacts);
     }
-
 }
