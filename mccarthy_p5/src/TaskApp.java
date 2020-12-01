@@ -15,6 +15,9 @@ public class TaskApp extends App {
             if(menuChoice == 1) {
                 createNewTaskList();
             }
+            else if(menuChoice == 2) {
+                loadTaskList();
+            }
             else if(menuChoice == 3) {
                 return;
             }
@@ -37,6 +40,25 @@ public class TaskApp extends App {
         }
     }
 
+    public void loadTaskList() {
+        TaskList taskList = new TaskList();
+        System.out.print("Enter file name to open: ");
+        String fileName = getStringInput();
+        taskList.setFileName(fileName);
+        taskList.totalTasks = taskList.getTotalTasks();
+
+        int choice = 0;
+        while(choice != 8) {
+            printListOperationMenu();
+            choice = getUserOption(8);
+            if(choice == 8) {
+                return;
+            }
+            else
+                branchFromTaskList(choice, taskList);
+        }
+    }
+
     public void printListOperationMenu() {
         System.out.println("List Operation Menu\n" +
                 "---------\n" +
@@ -52,6 +74,7 @@ public class TaskApp extends App {
     }
 
     public void branchFromTaskList(int choice, TaskList list) {
+        taskList = list;
         switch(choice) {
             case 1:
                 list.readTaskList();
@@ -103,6 +126,7 @@ public class TaskApp extends App {
                 }
                 break;
             case 7:
+                System.out.print("Enter list name: ");
                 list.renameFile(getNewListName());
                 break;
             default:

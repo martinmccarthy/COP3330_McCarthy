@@ -138,7 +138,7 @@ public class TaskList {
     }
 
     public int getTotalTasks () {
-        ArrayList<Integer> possibleTasks = new ArrayList<>();
+        int taskCounter = 0;
         try{
             File fileToRead = new File(fileName);
             Scanner reader = new Scanner(fileToRead);
@@ -146,11 +146,8 @@ public class TaskList {
             reader.nextLine();
             reader.nextLine();
 
-            String infoToPull;
             while(reader.hasNext()) {
-                infoToPull = reader.next();
-                int nextTask = Integer.parseInt(infoToPull);
-                possibleTasks.add(nextTask);
+                taskCounter++;
                 reader.nextLine();
             }
 
@@ -160,7 +157,7 @@ public class TaskList {
             System.out.println("could not read file");
         }
 
-        return possibleTasks.toArray().length;
+        return taskCounter;
     }
 
     public void editATask(int taskToEdit, String newTitle, String newDesc, String newDate) {
@@ -214,7 +211,8 @@ public class TaskList {
 
     public void writeToFile(String taskToAdd) {
         try{
-            FileWriter writer = new FileWriter(fileName, true);
+            File file = new File(fileName);
+            FileWriter writer = new FileWriter(file, true);
             writer.write(taskToAdd + "\n");
             writer.close();
         }

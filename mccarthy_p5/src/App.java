@@ -61,7 +61,7 @@ public class App {
 
     public void openTaskApp() {
         TaskApp taskApp = new TaskApp();
-
+        taskApp.openTaskListMenu();
     }
 
     public void openContactApp() {
