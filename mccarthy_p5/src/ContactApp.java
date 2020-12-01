@@ -14,10 +14,6 @@ public class ContactApp extends App {
                 return;
             }
         }
-        /*ContactList contactList = new ContactList();
-        printContactMenu();
-        int choice = getUserOption(6);
-        branchFromContactList(choice);*/
     }
 
     public void createNewContactList() {

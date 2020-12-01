@@ -12,7 +12,7 @@ public class App {
             app.printApplicationSelect();
             choice = app.getUserOption(3);
             if(choice == 1) {
-                // open task list
+                app.openTaskApp();
             }
             else if(choice == 2) {
                 app.openContactApp();
@@ -57,6 +57,11 @@ public class App {
                 "1) create a new list\n" +
                 "2) load an existing list\n" +
                 "3) quit");
+    }
+
+    public void openTaskApp() {
+        TaskApp taskApp = new TaskApp();
+
     }
 
     public void openContactApp() {

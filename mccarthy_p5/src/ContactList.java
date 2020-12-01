@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ContactList {
@@ -80,28 +81,32 @@ public class ContactList {
     }
 
     public void editContactList(int contactToEdit, String newContactString) {
+        ArrayList<String> lines = new ArrayList<String>();
+
         File file = new File(listName);
 
-        String fileText = "";
-        String contactString = "";
+        String line = "";
 
         char c = (char)contactToEdit;
         try{
             Scanner reader = new Scanner(file);
             while(reader.hasNext()) {
-                String currentLine = reader.nextLine();
-                if(currentLine.charAt(0) == c) {
-                    contactString = currentLine;
+                line = reader.nextLine();
+                if(line.charAt(0) == c) {
+                    line = newContactString;
                 }
-                fileText += currentLine + "\n";
+                lines.add(line);
+            }
+            FileWriter writer = new FileWriter(listName);
+            for(String str: lines) {
+                writer.write(str + System.lineSeparator());
             }
             reader.close();
+            writer.close();
         }
-        catch(FileNotFoundException e) {
-            System.out.println("could not write to file");
+        catch(Exception e) {
+            System.out.println("could not write to/read file");
             e.printStackTrace();
         }
-        String newFileText = fileText.replaceAll(contactString, newContactString);
-        System.out.println(newFileText);
     }
 }
