@@ -83,29 +83,28 @@ public class ContactList {
     public void editContactList(int contactToEdit, String newContactString) {
         ArrayList<String> lines = new ArrayList<String>();
 
-        File file = new File(listName);
-
-        String line = "";
-
-        char c = (char)contactToEdit;
-        try{
-            Scanner reader = new Scanner(file);
-            while(reader.hasNext()) {
+        try {
+            File fileToEdit = new File(listName);
+            Scanner reader = new Scanner(fileToEdit);
+            String line = "";
+            while (reader.hasNext()) {
                 line = reader.nextLine();
-                if(line.charAt(0) == c) {
-                    line = newContactString;
+                if (line.contains(contactToEdit + ")")) {
+                    line = line.replace(line, contactToEdit + ") " + newContactString);
+                    reader.nextLine();
+                    reader.nextLine();
                 }
                 lines.add(line);
             }
             FileWriter writer = new FileWriter(listName);
-            for(String str: lines) {
+            for (String str : lines) {
                 writer.write(str + System.lineSeparator());
             }
+
             reader.close();
             writer.close();
-        }
-        catch(Exception e) {
-            System.out.println("could not write to/read file");
+        } catch (Exception e) {
+            System.out.println("could not read file");
             e.printStackTrace();
         }
     }
