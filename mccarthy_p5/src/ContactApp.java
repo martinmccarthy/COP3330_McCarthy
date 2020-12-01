@@ -1,5 +1,3 @@
-import java.util.StringTokenizer;
-
 public class ContactApp extends App {
     public void openContactListMenu() {
         int menuChoice = 0;
@@ -10,6 +8,9 @@ public class ContactApp extends App {
             if(menuChoice == 1) {
                 createNewContactList();
             }
+            else if(menuChoice == 2) {
+                loadContactList();
+            }
             else if(menuChoice == 3) {
                 return;
             }
@@ -19,6 +20,24 @@ public class ContactApp extends App {
     public void createNewContactList() {
         ContactList contactList = new ContactList();
         contactList.setListName("new-contact-list.txt");
+        contactList.createContactList();
+        int choice = 0;
+
+        while(choice != 6) {
+            printContactMenu();
+            choice = getUserOption(6);
+            if(choice == 6)
+                return;
+            else
+                branchFromContactList(choice, contactList);
+        }
+    }
+
+    public void loadContactList() {
+        ContactList contactList = new ContactList();
+        System.out.print("Enter the filename to load: ");
+        String listName = getStringInput();
+        contactList.setListName(listName);
         contactList.createContactList();
         int choice = 0;
 
