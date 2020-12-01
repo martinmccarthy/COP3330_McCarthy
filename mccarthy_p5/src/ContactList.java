@@ -49,12 +49,11 @@ public class ContactList {
 
     void addAnItem(String firstName, String lastName, String phoneNumber, String emailAddress) {
         String testForNull = firstName + lastName + phoneNumber + emailAddress;
-        if(testForNull.length() == 0) {
+        ContactItem newItem = new ContactItem();
+        if(newItem.checkForValue(testForNull) == 0) {
             System.out.println("Empty contact, item not created.");
             return;
         }
-
-        ContactItem newItem = new ContactItem();
         totalContacts++;
 
         newItem.setFirstName(firstName);
